@@ -68,21 +68,19 @@ for key in bog.keys():
 bog_positive = {k: v for k, v in sorted(bog_positive.items(), reverse = True, key=lambda item: item[1])}
 bog_negative = {k: v for k, v in sorted(bog_negative.items(), reverse = True, key=lambda item: item[1])}
 
-probabilities_positive = {}
-probabilites_negative = {}
-
-for key in bog_positive.keys():
-    probabilities_positive[key] = (bog_positive[key]+1)/(count_positive+vocab_size)
-for key in bog_negative.keys():
-    probabilites_negative[key] = (bog_negative[key]+1)/(count_negative+vocab_size)
-
 predictions = []
 for sentence in sentences:
     prob_positive = 1
     prob_negative = 1
     for word in sentence.split():
-        prob_positive *= probabilities_positive[word]
-        prob_negative *= probabilites_negative[word]
+        try:
+            prob_positive *= (bog_positive[word]+1)/(count_positive+vocab_size)
+        except:
+            prob_positive *= (0+1)/(count_positive+vocab_size)
+        try:
+            prob_negative *= (bog_negative[word]+1)/(count_negative+vocab_size)
+        except:
+            prob_negative *= (0+1)/(count_negative+vocab_size)
     if prob_positive > prob_negative:
         predictions.append(1)
     else:
