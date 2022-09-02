@@ -20,7 +20,7 @@ for line in file:
     labels.append(int(line[0]))
     sentences.append(line[2:-1].lower())
 
-unwanted_char = "![]{};\,<>./?@#$%^&*_-=+~@"
+unwanted_char = "![]{};\,<>./?@$%^&*_-=+~@"
 bog = {}
 
 for i in range(len(sentences)):
@@ -59,11 +59,6 @@ for i in range(len(sentences)):
                 bog_positive[word] += 1
                 count_positive += 1
 
-for key in bog.keys():
-    if key not in bog_positive.keys():
-        bog_positive[key] = 0
-    if key not in bog_negative.keys():
-        bog_negative[key] = 0
 
 bog_positive = {k: v for k, v in sorted(bog_positive.items(), reverse = True, key=lambda item: item[1])}
 bog_negative = {k: v for k, v in sorted(bog_negative.items(), reverse = True, key=lambda item: item[1])}
