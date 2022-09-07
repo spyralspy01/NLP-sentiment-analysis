@@ -7,9 +7,8 @@ Created on Thu Sep  1 14:01:41 2022
 This is a from scratch implementation to the sentiment analysis problem using
 naive bayes
 """
-
-import string
-import pandas as pd
+from math import log
+#import pandas as pd
 
 # file = pd.read_csv('train-v2.tsv', sep='\t', header = None)
 file = open('train-v2.tsv', 'r', encoding = "UTF-8").readlines()
@@ -20,6 +19,8 @@ for line in file:
     labels.append(int(line[0]))
     sentences.append(line[2:-1].lower())
 
+# test=re.findall(r"[\w']+|[.,!?;]", "Hello, I'm a string!")
+# print(test)
 unwanted_char = "![]{};\,<>./?@$%^&*_-=+~@"
 bog = {}
 
@@ -69,13 +70,14 @@ for sentence in sentences:
     prob_negative = 1
     for word in sentence.split():
         try:
-            prob_positive *= (bog_positive[word]+1)/(count_positive+vocab_size)
+            prob_positive += log((bog_positive[word]+1)/(count_positive+vocab_size))
         except:
-            prob_positive *= (0+1)/(count_positive+vocab_size)
+            prob_positive += log((0+1)/(count_positive+vocab_size))
         try:
-            prob_negative *= (bog_negative[word]+1)/(count_negative+vocab_size)
+            prob_negative += log((bog_negative[word]+1)/(count_negative+vocab_size))
         except:
-            prob_negative *= (0+1)/(count_negative+vocab_size)
+            prob_negative += log((0+1)/(count_negative+vocab_size))
+
     if prob_positive > prob_negative:
         predictions.append(1)
     else:
@@ -88,6 +90,7 @@ for i in range(total):
         correct += 1
 
 accuracy = correct/total
+print(accuracy)
 
 
 
