@@ -8,9 +8,7 @@ This is a from scratch implementation to the sentiment analysis problem using
 naive bayes
 """
 from math import log
-#import pandas as pd
-
-# file = pd.read_csv('train-v2.tsv', sep='\t', header = None)
+import re
 file = open('train-v2.tsv', 'r', encoding = "UTF-8").readlines()
 
 labels = []
@@ -19,18 +17,19 @@ for line in file:
     labels.append(int(line[0]))
     sentences.append(line[2:-1].lower())
 
-# test=re.findall(r"[\w']+|[.,!?;]", "Hello, I'm a string!")
-# print(test)
-unwanted_char = "![]{};\,<>./?@$%^&*_-=+~@"
+
+#unwanted_char = ""
+# unwanted_char = "![]{};\,<>./?@$%^&*_-=+~@"
 bog = {}
 
-for i in range(len(sentences)):
-    for j in range(len(sentences[i])):
-        if sentences[i][j] in unwanted_char:
-            sentences[i] = sentences[i].replace(sentences[i][j]," ")
+# for i in range(len(sentences)):
+#     for j in range(len(sentences[i])):
+#         if sentences[i][j] in unwanted_char:
+#             sentences[i] = sentences[i].replace(sentences[i][j]," ")
 
 for line in sentences:
-    for word in line.split():
+    for word in re.findall(r"[\w]+|[^\s\w]", line):
+        #print(word)
         if word not in bog.keys():
             bog[word] = 1
         else:
@@ -38,7 +37,7 @@ for line in sentences:
 
 bog = {k: v for k, v in sorted(bog.items(), reverse = True, key=lambda item: item[1])}
 vocab_size = len(bog.keys())
-
+#print(bog.keys())
 bog_positive = {}
 bog_negative = {}
 count_positive = 0
