@@ -37,13 +37,14 @@ for line in sentences:
 
 bog = {k: v for k, v in sorted(bog.items(), reverse = True, key=lambda item: item[1])}
 vocab_size = len(bog.keys())
-#print(bog.keys())
+#print(bog)
 bog_positive = {}
 bog_negative = {}
 count_positive = 0
 count_negative = 0
+
 for i in range(len(sentences)):
-    for word in sentences[i].split():
+    for word in re.findall(r"[\w]+|[^\s\w]", sentences[i]):
         if labels[i] == 0:
             if word not in bog_negative.keys():
                 bog_negative[word] = 1
