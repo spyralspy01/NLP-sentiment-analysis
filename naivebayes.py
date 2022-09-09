@@ -40,7 +40,6 @@ for x in range(split_index,len(sentences)):
     test_sentences.append(sentences[x])
     test_labels.append(labels[x])
 
-
 #check split ratio of +ive & -ive tweets 
 count_1=0
 count_0=0
@@ -54,16 +53,9 @@ print("Count of Negative tweets in test data",count_0, " % of Negative Tweets", 
 print("Count of positive tweets in test data",count_1, " % of Positive Tweets", (count_1/len(test_labels))*100)    
 bog = {}
 
-#unwanted_char = ""
-# unwanted_char = "![]{};\,<>./?@$%^&*_-=+~@"
-# for i in range(len(sentences)):
-#     for j in range(len(sentences[i])):
-#         if sentences[i][j] in unwanted_char:
-#             sentences[i] = sentences[i].replace(sentences[i][j]," ")
-
 
 for line in train_data:
-    for word in re.findall(r"[\w]+|[^\s\w]", line):
+    for word in re.findall(r"[\w]+|[^\s\w]", line): #separating punctuation as tokens
         if word not in bog.keys():
             bog[word] = 1
         else:
@@ -97,6 +89,8 @@ for i in range(len(train_data)):
 
 bog_positive = {k: v for k, v in sorted(bog_positive.items(), reverse = True, key=lambda item: item[1])}
 bog_negative = {k: v for k, v in sorted(bog_negative.items(), reverse = True, key=lambda item: item[1])}
+
+
 
 #prediction
 predictions = []
